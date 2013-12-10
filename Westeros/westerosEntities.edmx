@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="westerosDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblAdjacentTerritory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblAdjacentTerritory">
+          <Key>
+            <PropertyRef Name="TerritoryID" />
+            <PropertyRef Name="AdjacentTerritoryID" />
+          </Key>
+          <Property Name="TerritoryID" Type="int" Nullable="false" />
+          <Property Name="AdjacentTerritoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblGameTerritory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblGameTerritory">
+          <Key>
+            <PropertyRef Name="GameTerritoryID" />
+            <PropertyRef Name="GameID" />
+            <PropertyRef Name="TerritoryID" />
+            <PropertyRef Name="TerritoryArmyID" />
+          </Key>
+          <Property Name="GameTerritoryID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GameID" Type="bigint" Nullable="false" />
+          <Property Name="TerritoryID" Type="int" Nullable="false" />
+          <Property Name="TerritoryArmyID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblHouse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblHouse">
+          <Key>
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="Color" />
+            <PropertyRef Name="StartingIronThronePosition" />
+            <PropertyRef Name="StartingFiefdomPosition" />
+            <PropertyRef Name="StartingFealtyPosition" />
+          </Key>
+          <Property Name="HouseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Color" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="StartingIronThronePosition" Type="int" Nullable="false" />
+          <Property Name="StartingFiefdomPosition" Type="int" Nullable="false" />
+          <Property Name="StartingFealtyPosition" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblHouseCard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblHouseCard">
+          <Key>
+            <PropertyRef Name="HouseCardID" />
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="HouseCardKey" />
+            <PropertyRef Name="HouseCardDescription" />
+            <PropertyRef Name="HouseCardTypeID" />
+            <PropertyRef Name="HouseCardPower" />
+          </Key>
+          <Property Name="HouseCardID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HouseID" Type="int" Nullable="false" />
+          <Property Name="HouseCardKey" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="HouseCardDescription" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="HouseCardTypeID" Type="int" Nullable="false" />
+          <Property Name="HouseCardPower" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblHouseTerritory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblHouseTerritory">
+          <Key>
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="TerritoryID" />
+          </Key>
+          <Property Name="HouseID" Type="int" Nullable="false" />
+          <Property Name="TerritoryID" Type="int" Nullable="false" />
+          <Property Name="PawnCount" Type="int" />
+          <Property Name="KnightCount" Type="int" />
+          <Property Name="ShipCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblPlayer' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblPlayer">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="GameID" />
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="IronThronePosition" />
+            <PropertyRef Name="FiefdomPosition" />
+            <PropertyRef Name="FealtyPosition" />
+          </Key>
+          <Property Name="PlayerID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="GameID" Type="bigint" Nullable="false" />
+          <Property Name="HouseID" Type="bigint" Nullable="false" />
+          <Property Name="IronThronePosition" Type="int" Nullable="false" />
+          <Property Name="FiefdomPosition" Type="int" Nullable="false" />
+          <Property Name="FealtyPosition" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblTerritory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblTerritory">
+          <Key>
+            <PropertyRef Name="TerritoryID" />
+            <PropertyRef Name="SupplyCount" />
+            <PropertyRef Name="TerritoryTypeID" />
+          </Key>
+          <Property Name="TerritoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SupplyCount" Type="int" Nullable="false" />
+          <Property Name="TerritoryTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblTerritoryArmy' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblTerritoryArmy">
+          <Key>
+            <PropertyRef Name="TerritoryArmyID" />
+            <PropertyRef Name="GameTerritoryID" />
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="TerritoryArmyID" Type="bigint" Nullable="false" />
+          <Property Name="GameTerritoryID" Type="bigint" Nullable="false" />
+          <Property Name="PlayerID" Type="bigint" Nullable="false" />
+          <Property Name="PawnCount" Type="int" />
+          <Property Name="KnightCount" Type="int" />
+          <Property Name="ShipCount" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'westerosDB.dbo.tblUserProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblUserProfile">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="westerosDBModelStoreContainer">
+          <EntitySet Name="tblAdjacentTerritory" EntityType="Self.tblAdjacentTerritory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblAdjacentTerritory].[TerritoryID] AS [TerritoryID], 
+    [tblAdjacentTerritory].[AdjacentTerritoryID] AS [AdjacentTerritoryID]
+    FROM [dbo].[tblAdjacentTerritory] AS [tblAdjacentTerritory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblGameTerritory" EntityType="Self.tblGameTerritory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblGameTerritory].[GameTerritoryID] AS [GameTerritoryID], 
+    [tblGameTerritory].[GameID] AS [GameID], 
+    [tblGameTerritory].[TerritoryID] AS [TerritoryID], 
+    [tblGameTerritory].[TerritoryArmyID] AS [TerritoryArmyID]
+    FROM [dbo].[tblGameTerritory] AS [tblGameTerritory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblHouse" EntityType="Self.tblHouse" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblHouse].[HouseID] AS [HouseID], 
+    [tblHouse].[Color] AS [Color], 
+    [tblHouse].[StartingIronThronePosition] AS [StartingIronThronePosition], 
+    [tblHouse].[StartingFiefdomPosition] AS [StartingFiefdomPosition], 
+    [tblHouse].[StartingFealtyPosition] AS [StartingFealtyPosition]
+    FROM [dbo].[tblHouse] AS [tblHouse]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblHouseCard" EntityType="Self.tblHouseCard" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblHouseCard].[HouseCardID] AS [HouseCardID], 
+    [tblHouseCard].[HouseID] AS [HouseID], 
+    [tblHouseCard].[HouseCardKey] AS [HouseCardKey], 
+    [tblHouseCard].[HouseCardDescription] AS [HouseCardDescription], 
+    [tblHouseCard].[HouseCardTypeID] AS [HouseCardTypeID], 
+    [tblHouseCard].[HouseCardPower] AS [HouseCardPower]
+    FROM [dbo].[tblHouseCard] AS [tblHouseCard]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblHouseTerritory" EntityType="Self.tblHouseTerritory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblHouseTerritory].[HouseID] AS [HouseID], 
+    [tblHouseTerritory].[TerritoryID] AS [TerritoryID], 
+    [tblHouseTerritory].[PawnCount] AS [PawnCount], 
+    [tblHouseTerritory].[KnightCount] AS [KnightCount], 
+    [tblHouseTerritory].[ShipCount] AS [ShipCount]
+    FROM [dbo].[tblHouseTerritory] AS [tblHouseTerritory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblPlayer" EntityType="Self.tblPlayer" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblPlayer].[PlayerID] AS [PlayerID], 
+    [tblPlayer].[UserID] AS [UserID], 
+    [tblPlayer].[GameID] AS [GameID], 
+    [tblPlayer].[HouseID] AS [HouseID], 
+    [tblPlayer].[IronThronePosition] AS [IronThronePosition], 
+    [tblPlayer].[FiefdomPosition] AS [FiefdomPosition], 
+    [tblPlayer].[FealtyPosition] AS [FealtyPosition]
+    FROM [dbo].[tblPlayer] AS [tblPlayer]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblTerritory" EntityType="Self.tblTerritory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblTerritory].[TerritoryID] AS [TerritoryID], 
+    [tblTerritory].[SupplyCount] AS [SupplyCount], 
+    [tblTerritory].[TerritoryTypeID] AS [TerritoryTypeID]
+    FROM [dbo].[tblTerritory] AS [tblTerritory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblTerritoryArmy" EntityType="Self.tblTerritoryArmy" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblTerritoryArmy].[TerritoryArmyID] AS [TerritoryArmyID], 
+    [tblTerritoryArmy].[GameTerritoryID] AS [GameTerritoryID], 
+    [tblTerritoryArmy].[PlayerID] AS [PlayerID], 
+    [tblTerritoryArmy].[PawnCount] AS [PawnCount], 
+    [tblTerritoryArmy].[KnightCount] AS [KnightCount], 
+    [tblTerritoryArmy].[ShipCount] AS [ShipCount]
+    FROM [dbo].[tblTerritoryArmy] AS [tblTerritoryArmy]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tblUserProfile" EntityType="Self.tblUserProfile" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tblUserProfile].[UserID] AS [UserID], 
+    [tblUserProfile].[Email] AS [Email], 
+    [tblUserProfile].[UserName] AS [UserName]
+    FROM [dbo].[tblUserProfile] AS [tblUserProfile]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="westerosDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblAdjacentTerritory">
+          <Key>
+            <PropertyRef Name="TerritoryID" />
+            <PropertyRef Name="AdjacentTerritoryID" />
+          </Key>
+          <Property Name="TerritoryID" Type="Int32" Nullable="false" />
+          <Property Name="AdjacentTerritoryID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblGameTerritory">
+          <Key>
+            <PropertyRef Name="GameTerritoryID" />
+            <PropertyRef Name="GameID" />
+            <PropertyRef Name="TerritoryID" />
+            <PropertyRef Name="TerritoryArmyID" />
+          </Key>
+          <Property Name="GameTerritoryID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameID" Type="Int64" Nullable="false" />
+          <Property Name="TerritoryID" Type="Int32" Nullable="false" />
+          <Property Name="TerritoryArmyID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblHouse">
+          <Key>
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="Color" />
+            <PropertyRef Name="StartingIronThronePosition" />
+            <PropertyRef Name="StartingFiefdomPosition" />
+            <PropertyRef Name="StartingFealtyPosition" />
+          </Key>
+          <Property Name="HouseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Color" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartingIronThronePosition" Type="Int32" Nullable="false" />
+          <Property Name="StartingFiefdomPosition" Type="Int32" Nullable="false" />
+          <Property Name="StartingFealtyPosition" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblHouseCard">
+          <Key>
+            <PropertyRef Name="HouseCardID" />
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="HouseCardKey" />
+            <PropertyRef Name="HouseCardDescription" />
+            <PropertyRef Name="HouseCardTypeID" />
+            <PropertyRef Name="HouseCardPower" />
+          </Key>
+          <Property Name="HouseCardID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HouseID" Type="Int32" Nullable="false" />
+          <Property Name="HouseCardKey" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HouseCardDescription" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HouseCardTypeID" Type="Int32" Nullable="false" />
+          <Property Name="HouseCardPower" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblHouseTerritory">
+          <Key>
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="TerritoryID" />
+          </Key>
+          <Property Name="HouseID" Type="Int32" Nullable="false" />
+          <Property Name="TerritoryID" Type="Int32" Nullable="false" />
+          <Property Name="PawnCount" Type="Int32" />
+          <Property Name="KnightCount" Type="Int32" />
+          <Property Name="ShipCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblPlayer">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="GameID" />
+            <PropertyRef Name="HouseID" />
+            <PropertyRef Name="IronThronePosition" />
+            <PropertyRef Name="FiefdomPosition" />
+            <PropertyRef Name="FealtyPosition" />
+          </Key>
+          <Property Name="PlayerID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="GameID" Type="Int64" Nullable="false" />
+          <Property Name="HouseID" Type="Int64" Nullable="false" />
+          <Property Name="IronThronePosition" Type="Int32" Nullable="false" />
+          <Property Name="FiefdomPosition" Type="Int32" Nullable="false" />
+          <Property Name="FealtyPosition" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTerritory">
+          <Key>
+            <PropertyRef Name="TerritoryID" />
+            <PropertyRef Name="SupplyCount" />
+            <PropertyRef Name="TerritoryTypeID" />
+          </Key>
+          <Property Name="TerritoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SupplyCount" Type="Int32" Nullable="false" />
+          <Property Name="TerritoryTypeID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTerritoryArmy">
+          <Key>
+            <PropertyRef Name="TerritoryArmyID" />
+            <PropertyRef Name="GameTerritoryID" />
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="TerritoryArmyID" Type="Int64" Nullable="false" />
+          <Property Name="GameTerritoryID" Type="Int64" Nullable="false" />
+          <Property Name="PlayerID" Type="Int64" Nullable="false" />
+          <Property Name="PawnCount" Type="Int32" />
+          <Property Name="KnightCount" Type="Int32" />
+          <Property Name="ShipCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblUserProfile">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="westerosDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblAdjacentTerritories" EntityType="Self.tblAdjacentTerritory" />
+          <EntitySet Name="tblGameTerritories" EntityType="Self.tblGameTerritory" />
+          <EntitySet Name="tblHouses" EntityType="Self.tblHouse" />
+          <EntitySet Name="tblHouseCards" EntityType="Self.tblHouseCard" />
+          <EntitySet Name="tblHouseTerritories" EntityType="Self.tblHouseTerritory" />
+          <EntitySet Name="tblPlayers" EntityType="Self.tblPlayer" />
+          <EntitySet Name="tblTerritories" EntityType="Self.tblTerritory" />
+          <EntitySet Name="tblTerritoryArmies" EntityType="Self.tblTerritoryArmy" />
+          <EntitySet Name="tblUserProfiles" EntityType="Self.tblUserProfile" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="westerosDBModelStoreContainer" CdmEntityContainer="westerosDBEntities">
+          <EntitySetMapping Name="tblAdjacentTerritories">
+            <EntityTypeMapping TypeName="westerosDBModel.tblAdjacentTerritory">
+              <MappingFragment StoreEntitySet="tblAdjacentTerritory">
+                <ScalarProperty Name="TerritoryID" ColumnName="TerritoryID" />
+                <ScalarProperty Name="AdjacentTerritoryID" ColumnName="AdjacentTerritoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblGameTerritories">
+            <EntityTypeMapping TypeName="westerosDBModel.tblGameTerritory">
+              <MappingFragment StoreEntitySet="tblGameTerritory">
+                <ScalarProperty Name="GameTerritoryID" ColumnName="GameTerritoryID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="TerritoryID" ColumnName="TerritoryID" />
+                <ScalarProperty Name="TerritoryArmyID" ColumnName="TerritoryArmyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblHouses">
+            <EntityTypeMapping TypeName="westerosDBModel.tblHouse">
+              <MappingFragment StoreEntitySet="tblHouse">
+                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="StartingIronThronePosition" ColumnName="StartingIronThronePosition" />
+                <ScalarProperty Name="StartingFiefdomPosition" ColumnName="StartingFiefdomPosition" />
+                <ScalarProperty Name="StartingFealtyPosition" ColumnName="StartingFealtyPosition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblHouseCards">
+            <EntityTypeMapping TypeName="westerosDBModel.tblHouseCard">
+              <MappingFragment StoreEntitySet="tblHouseCard">
+                <ScalarProperty Name="HouseCardID" ColumnName="HouseCardID" />
+                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+                <ScalarProperty Name="HouseCardKey" ColumnName="HouseCardKey" />
+                <ScalarProperty Name="HouseCardDescription" ColumnName="HouseCardDescription" />
+                <ScalarProperty Name="HouseCardTypeID" ColumnName="HouseCardTypeID" />
+                <ScalarProperty Name="HouseCardPower" ColumnName="HouseCardPower" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblHouseTerritories">
+            <EntityTypeMapping TypeName="westerosDBModel.tblHouseTerritory">
+              <MappingFragment StoreEntitySet="tblHouseTerritory">
+                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+                <ScalarProperty Name="TerritoryID" ColumnName="TerritoryID" />
+                <ScalarProperty Name="PawnCount" ColumnName="PawnCount" />
+                <ScalarProperty Name="KnightCount" ColumnName="KnightCount" />
+                <ScalarProperty Name="ShipCount" ColumnName="ShipCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPlayers">
+            <EntityTypeMapping TypeName="westerosDBModel.tblPlayer">
+              <MappingFragment StoreEntitySet="tblPlayer">
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="HouseID" ColumnName="HouseID" />
+                <ScalarProperty Name="IronThronePosition" ColumnName="IronThronePosition" />
+                <ScalarProperty Name="FiefdomPosition" ColumnName="FiefdomPosition" />
+                <ScalarProperty Name="FealtyPosition" ColumnName="FealtyPosition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTerritories">
+            <EntityTypeMapping TypeName="westerosDBModel.tblTerritory">
+              <MappingFragment StoreEntitySet="tblTerritory">
+                <ScalarProperty Name="TerritoryID" ColumnName="TerritoryID" />
+                <ScalarProperty Name="SupplyCount" ColumnName="SupplyCount" />
+                <ScalarProperty Name="TerritoryTypeID" ColumnName="TerritoryTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTerritoryArmies">
+            <EntityTypeMapping TypeName="westerosDBModel.tblTerritoryArmy">
+              <MappingFragment StoreEntitySet="tblTerritoryArmy">
+                <ScalarProperty Name="TerritoryArmyID" ColumnName="TerritoryArmyID" />
+                <ScalarProperty Name="GameTerritoryID" ColumnName="GameTerritoryID" />
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="PawnCount" ColumnName="PawnCount" />
+                <ScalarProperty Name="KnightCount" ColumnName="KnightCount" />
+                <ScalarProperty Name="ShipCount" ColumnName="ShipCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserProfiles">
+            <EntityTypeMapping TypeName="westerosDBModel.tblUserProfile">
+              <MappingFragment StoreEntitySet="tblUserProfile">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
