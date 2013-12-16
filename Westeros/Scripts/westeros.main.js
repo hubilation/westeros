@@ -29,7 +29,7 @@ Westeros.Main = (function () {
         self.power = power || 0;
         self.supply = supply || 0;
         self.musterPoints = musterPoints || 0;
-        self.adjacentTerritories = [];
+        self.adjacentTerritories = adjacentTerritories || [];
         self.pathData = pathData;
     };
 
