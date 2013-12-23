@@ -1,4 +1,31 @@
 ﻿@using Westeros.Code
+
+<style>
+    #container {
+        width: 920px;
+        height: 1584px;
+        display: inline-block;
+    }
+    #data {
+        display: inline-block;
+        vertical-align: top;
+        position: fixed;
+        top: 0px;
+        left: 980px;
+    }
+</style>
+
 <div id="container"></div>
+<div id="data">
+    <ul>
+        <li>Territory: <span id="territory"></span></li>
+        <li>Muster Points: <span id="musterPoints"></span></li>
+        <li>Supply: <span id="supply"></span></li>
+        <li>Power: <span id="power"></span></li>
+        <li>Adjacent Territories <ul id="adjTerritories"></ul></li>
+        <li>Position: <span id="pos"></span></li>
+        <li>Width: <span id="width"></span> Height: <span id="height"></span></li>
+    </ul>
+</div>
 
 @UI.RunScriptOnLoad("Westeros.Main.init()")

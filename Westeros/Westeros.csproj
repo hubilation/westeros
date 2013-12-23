@@ -197,6 +197,8 @@
     <Compile Include="WesterosDataAccess.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\barrel.png" />
+    <Content Include="Content\crown.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -210,6 +212,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\kinetic-v4.7.4.min.js" />
     <Content Include="Scripts\knockout-3.0.0.debug.js" />
     <Content Include="Scripts\knockout-3.0.0.js" />
     <Content Include="Scripts\westeros.main.js" />
@@ -224,6 +227,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\westeros.territories.js" />
     <Content Include="Scripts\westeros.utilities.js" />
     <Content Include="Scripts\westeros.utilties.paths.js" />
     <Content Include="Scripts\_references.js" />

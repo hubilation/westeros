@@ -19,33 +19,25 @@
 Westeros.Main = (function () {
 
     var stage;
-    var layer;
+    var mapLayer;
+    var attrLayer;
+    var crownEle;
+    var barrelEle;
 
-    var territory = function(pathData, name, type, power, supply, musterPoints, adjacentTerritories) {
+    var territory = function(pathData, name, type, key, power, supply, musterPoints, uiData, adjacentTerritories) {
         var self = this;
         self.name = name;
         self.type = type;
-        self.key = camelCase(self.name) + (self.type === 'port' ? "_port" : "");
+        self.key = key;
         self.power = power || 0;
         self.supply = supply || 0;
         self.musterPoints = musterPoints || 0;
-        self.adjacentTerritories = [];
+        self.adjacentTerritories = adjacentTerritories || [];
+        self.uiData = uiData;
         self.pathData = pathData;
     };
 
-    var camelCase = function (input) {
-        //set any letter at the beginning of a word to upper case
-        var allCaps = input.replace(/\s[a-z]/g, function() {
-            return arguments[0].toUpperCase();
-        });
-        //remove spaces and apostrophes
-        var noSpaces = allCaps.replace(/\s|\'/g, "");
-        //lowercase the first letter of the string
-        var camel = noSpaces.replace(/^[A-Z]/, function() {
-            return arguments[0].toLowerCase();
-        });
-        return camel;
-    };
+    
 
     var territories = [];
 
@@ -53,14 +45,15 @@ Westeros.Main = (function () {
         
         stage = new Kinetic.Stage({
             container: 'container',
-            width: 1819,
-            height: 3168
+            width: 920,
+            height: 1584
         });
         
-        layer = new Kinetic.Layer();
+        mapLayer = new Kinetic.Layer();
+        attrLayer = new Kinetic.Layer();
 
-        $.each(Westeros.Utilities.data, function(i, v) {
-            territories.push(new territory(v.pathData, v.name, v.type, v.power, v.supply, v.musterPoints, v.adjacentTerritories));
+        $.each(Westeros.Territories.data, function(i, v) {
+            territories.push(new territory(v.pathData, v.name, v.type, v.key, v.power, v.supply, v.musterPoints, v.uiData, v.adjacentTerritories));
         });
 
         Westeros.log(territories);
@@ -69,141 +62,197 @@ Westeros.Main = (function () {
             addPath(v);
         });
 
+        initUiElements();
+
+        stage.add(mapLayer);
+        stage.add(attrLayer);
+
         stage.setScale(.5);
-    };
-
-    var setTerritoryName = function(area, pathData) {
-        var name = prompt("Enter territory name");
-        var type = prompt("Enter the territory type");
-        
-
-        
-        if (name && type) {
-            var fillColor = type === 'sea' ? 'blue' : type === 'land' ? 'brown' : 'grey';
-
-            territories.push(new territory(pathData, name, type));
-            area.setFill(fillColor);
-            area.off("click");
-            area.off("mouseover");
-            area.off("mouseout");
-        }
-    };
-
-    var setPowerSupply = function(area, id) {
-        var power = prompt("Enter power");
-        var supply = prompt("Enter supply");
-        
-        if (power && supply) {
-            var thisTerritory = $.grep(territories, function(n, i) {
-                return n.key === id;
-            });
-
-            thisTerritory[0].power = power;
-            thisTerritory[0].supply = supply;
-
-            area.setFill("white");
-            area.off("click");
-            area.off("mouseover");
-            area.off("mouseout");
-        }
-    };
-
-    var setMusterPoints = function(area, id) {
-        var musterPoints = prompt("Enter muster points for " + area.getAttr("id"));
-
-        var thisTerritory = $.grep(territories, function (n, i) {
-            return n.key === id;
-        });
-
-        thisTerritory[0].musterPoints = musterPoints;
-        
-
-        area.setFill("white");
-        area.off("click");
-        area.off("mouseover");
-        area.off("mouseout");
-    };
-
-    var setAdditionalTerritories = function(area, id) {
-        area.off("click");
-
-        area.setStroke("blue");
-        area.setStrokeWidth(5);
-
-        var selectedTerritories = [];
-
-        var areas = layer.getChildren();
-
-        $.each(areas, function (i, v) {
-            if (v.getAttr("id") === id) {
-                return;
-            }
-
-            v.off("click");
-
-            v.on("click", function() {
-                selectedTerritories.push(this.getAttr("id"));
-                this.setStroke("yellow");
-                this.setStrokeWidth(5);
-            });
-        });
-
-        area.on("click", function() {
-            var thisTerritory = $.grep(territories, function (n, i) {
-                return n.key === id;
-            });
-            debugger;
-            thisTerritory[0].adjacentTerritories = selectedTerritories;
-
-            area.off("click");
-
-            $.each(areas, function (i, v) {
-                if (v.getAttr("id") === id) {
-                    return;
-                }
-                v.setStrokeWidth(0);
-                v.setStroke("white");
-                v.on("click", function() {
-                    setAdditionalTerritories(this, this.getAttr("id"));
-                });
-            });
-
-            area.setStroke(0);
-            area.setStroke("white");
-            area.setFill("green");
-            area.off("mouseover");
-            area.off("mouseout");
-        });
-
+        stage.draw();
     };
 
     var addPath = function (tdata) {
 
+        var fill = tdata.power > 0 || tdata.supply > 0 ? "black" : "grey";
+
         var path = new Kinetic.Path({
             data: tdata.pathData,
             id: tdata.key,
-            fill: 'black',
+            fill: fill,
             scale: 1
         });
 
         path.on("mouseover", function() {
             this.setFill('white');
-            layer.draw();
+            displayData(this);
+            mapLayer.draw();
         });
         
         path.on("mouseout", function () {
-            this.setFill('black');
-            layer.draw();
+            this.setFill(fill);
+            mapLayer.draw();
         });
 
-        path.on("click", function () {
-            setAdditionalTerritories(this, this.getAttr("id"));
-            layer.draw();
-           
+
+        if (tdata.power > 0 || tdata.supply > 0) {
+            path.on("click.setupUi", function () {
+                setupUiElements(this);
+                attrLayer.draw();
+            });
+        }
+        
+
+        mapLayer.add(path);
+    };
+
+    var setupUiElements = function (area) {
+        crownEle.setDraggable("true");
+        barrelEle.setDraggable("true");
+
+        var thisTerritory = getTerritory(area.getAttr("id"));
+
+        for (var i = 0; i < thisTerritory.power; i++) {
+            attrLayer.add(crownEle.clone({
+                     name: thisTerritory.key + "-crown"
+                }));
+
+        }
+        for (var j = 0; j < thisTerritory.supply; j++) {
+            attrLayer.add(barrelEle.clone({
+                name: thisTerritory.key + "-barrel"
+            }));
+        }
+
+        var crowns = thisTerritory.power > 0 ? attrLayer.find('.' + thisTerritory.key +'-crown') : [];
+        var barrels = thisTerritory.supply > 0 ? attrLayer.find('.' + thisTerritory.key + '-barrel') : [];
+
+        for (var q = 0; q < crowns.length; q++) {
+            crowns[q].setY($(window).scrollTop() * 2);
+        }
+
+        for (var r = 0; r < barrels.length; r++) {
+            barrels[r].setY($(window).scrollTop() * 2);
+        }
+
+        if (thisTerritory.uiData.crownPos) {
+            for (var k = 0; k < thisTerritory.uiData.crownPos.length; k++) {
+                crowns[k].setX(thisTerritory.uiData.crownPos[k].x);
+                crowns[k].setY(thisTerritory.uiData.crownPos[k].y);
+            }
+        }
+
+        if (thisTerritory.uiData.barrelPos) {
+            for (var l = 0; l < thisTerritory.uiData.barrelPos.length; l++) {
+                barrels[l].setX(thisTerritory.uiData.barrelPos[l].x);
+                barrels[l].setY(thisTerritory.uiData.barrelPos[l].y);
+            }
+            
+        }
+
+        area.setFill("#b5fcc6");
+
+        area.off("click.setupUi");
+        area.off("mouseout");
+        area.off("mouseover");
+        area.on("click.saveUiData", function(e) {
+            if (e.ctrlKey) {
+                this.setFill("black");
+                mapLayer.draw();
+                stage.draw();
+
+                thisTerritory.uiData = {
+                    "crownPos" : [],
+                    "barrelPos": []
+                };
+
+                for (var m = 0; m < crowns.length; m++) {
+                    thisTerritory.uiData.crownPos.push({
+                        "x": crowns[m].getAttr("x"),
+                        "y": crowns[m].getAttr("y")
+                    });
+                }
+
+                for (var n = 0; n < barrels.length; n++) {
+                    thisTerritory.uiData.barrelPos.push({
+                        "x": barrels[n].getAttr("x"),
+                        "y": barrels[n].getAttr("y")
+                    });
+                }
+
+                attrLayer.draw();
+
+                this.off("click.saveUiData");
+            }
         });
 
-        layer.add(path);
-        stage.add(layer);
+        attrLayer.draw();
+        mapLayer.draw();
+    };
+
+
+    var initUiElements = function() {
+        var crownImg = new Image();
+        crownImg.onload = function () {
+            crownEle = new Kinetic.Image({
+                image: crownImg,
+                name: "crown",
+                width: 50,
+                height: 31,
+                x: 0,
+                y: 0,
+            });
+        };
+
+        var barrelImg = new Image();
+        barrelImg.onload = function() {
+            barrelEle = new Kinetic.Image({
+                image: barrelImg,
+                name: "barrel",
+                width: 50,
+                height: 59,
+                x: 0,
+                y: 0,
+            });
+        };
+
+        crownImg.src = '../Content/crown.png';
+        barrelImg.src = '../Content/barrel.png';
+    };
+
+    var displayData = function(area) {
+        var id = area.getAttr("id");
+        var thisTerritory = getTerritory(id);
+
+        $('#territory').text(thisTerritory.name);
+        $('#musterPoints').text(thisTerritory.musterPoints);
+        $('#supply').text(thisTerritory.supply);
+        $('#power').text(thisTerritory.power);
+
+        $('#adjTerritories').find('li').remove();
+
+        $.each(thisTerritory.adjacentTerritories, function (i, v) {
+
+            var adjTer = getTerritory(v);
+
+            var name = adjTer.type === "port" ? adjTer.name + " Port" : adjTer.name;
+
+            $('#adjTerritories').append('<li>' + name + '</li>');
+        });
+
+        $('#pos').text("x: " + area.getPosition().x + " y: " + area.getPosition().y);
+        $('#width').text(area.getAttr("width"));
+        $('#height').text(area.getAttr("height"));
+
+    };
+
+   
+
+    var getTerritory = function(key) {
+        var thisTerritory = $.grep(territories, function (n, i) {
+            return n.key == key;
+        });
+
+        return thisTerritory[0];
     };
 
     var dumpData = function() {
