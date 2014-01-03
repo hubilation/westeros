@@ -34,10 +34,10 @@ namespace Westeros
                 return new List<string>
                 {
                     "~/Scripts/knockout-3.0.0.debug.js",
-                    "~/Scripts/kinetic-v4.4.3.min.js",
+                    "~/Scripts/kinetic-v4.7.4.min.js",
                     "~/Scripts/westeros.main.js",
                     "~/Scripts/westeros.utilities.js",
-                    "~/Scripts/westeros.utilities.paths.js",
+                    "~/Scripts/westeros.territories.js",
                 }.ToArray();
             }
         }
