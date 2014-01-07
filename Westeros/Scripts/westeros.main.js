@@ -25,6 +25,7 @@ Westeros.Main = (function () {
     var barrelEle;
     var strongholdEle;
     var castleEle;
+    var unitBoundary;
 
     var territory = function (pathData, name, type, key, power, supply, musterPoints, uiData, adjacentTerritories) {
         var self = this;
@@ -76,7 +77,7 @@ Westeros.Main = (function () {
 
     var addPath = function (tdata) {
 
-        var fill = tdata.musterPoints > 0 ? "black" : "grey";
+        var fill = tdata.musterPoints > 0 ? "black" : "black";
 
         var path = new Kinetic.Path({
             data: tdata.pathData,
@@ -98,12 +99,11 @@ Westeros.Main = (function () {
 
 
 
-        if (tdata.musterPoints > 0) {
-            path.on("click.setupUi", function () {
-                setupUiElements(this);
-            });
-        }
-        
+        path.on("click.setupUi", function (e) {
+            setupUiElements(e, this);
+        });
+
+
 
 
 
@@ -111,9 +111,9 @@ Westeros.Main = (function () {
     };
 
     var placeUiElements = function (area) {
-        $.each(territories, function(i, v) {
+        $.each(territories, function (i, v) {
             if (v.musterPoints == 1) {
-                attrLayer.add(castleEle.clone({                    
+                attrLayer.add(castleEle.clone({
                     name: v.key + "-muster"
                 }));
             }
@@ -122,6 +122,12 @@ Westeros.Main = (function () {
                     name: v.key + "-muster"
                 }));
             }
+
+            attrLayer.add(unitBoundary.clone({
+                name: v.key + "-boundary",
+                x: v.uiData.unitBoundary.x,
+                y: v.uiData.unitBoundary.y
+            }));
 
             var castle = v.musterPoints > 0 ? attrLayer.find('.' + v.key + '-muster') : "";
 
@@ -134,16 +140,16 @@ Westeros.Main = (function () {
         attrLayer.draw();
     };
 
-    var placeCrowns = function() {
-        $.each(territories, function(i, v) {
+    var placeCrowns = function () {
+        $.each(territories, function (i, v) {
             for (var j = 0; j < v.power; j++) {
                 attrLayer.add(crownEle.clone({
                     name: v.key + "-crown"
                 }));
             }
-            
+
             var crowns = v.power > 0 ? attrLayer.find('.' + v.key + '-crown') : [];
-            
+
             if (crowns.length > 0) {
                 for (var k = 0; k < v.uiData.crownPos.length; k++) {
                     crowns[k].setX(v.uiData.crownPos[k].x);
@@ -156,57 +162,47 @@ Westeros.Main = (function () {
     };
 
     var placeBarrels = function () {
-        $.each(territories, function(i, v) {
+        $.each(territories, function (i, v) {
             for (var j = 0; j < v.supply; j++) {
                 attrLayer.add(barrelEle.clone({
                     name: v.key + "-barrel"
                 }));
             }
-            
+
             var barrels = v.supply > 0 ? attrLayer.find('.' + v.key + '-barrel') : [];
-            
+
             if (barrels.length > 0) {
                 for (var k = 0; k < v.uiData.barrelPos.length; k++) {
                     barrels[k].setX(v.uiData.barrelPos[k].x);
                     barrels[k].setY(v.uiData.barrelPos[k].y);
                 }
             }
-            
+
         });
 
         attrLayer.draw();
     };
 
-    var setupUiElements = function (area) {
+    var setupUiElements = function (event, area) {
         debugger;
-        castleEle.setDraggable("true");
-        strongholdEle.setDraggable("true");
-
+        unitBoundary.setDraggable("true");
 
         var thisTerritory = getTerritory(area.getAttr("id"));
 
-        if (thisTerritory.musterPoints == 1) {
-            attrLayer.add(castleEle.clone({
-                name: thisTerritory.key + "-muster"
-            }));
-        }
-        if (thisTerritory.musterPoints == 2) {
-            attrLayer.add(strongholdEle.clone({
-                name: thisTerritory.key + "-muster"
-            }));
-        }
+        attrLayer.add(unitBoundary.clone({
+            name: thisTerritory.key + "-boundary"
+        }));
 
-        var muster = thisTerritory.musterPoints > 0 ? attrLayer.find('.' + thisTerritory.key + '-muster') : [];
 
-        for (var q = 0; q < muster.length; q++) {
-            muster[q].setY($(window).scrollTop() * 2);
-        }
+        var thisBoundary = attrLayer.find('.' + thisTerritory.key + '-boundary')[0];
 
-       if (thisTerritory.uiData.musterPos) {
-           for (var k = 0; k < thisTerritory.uiData.musterPos.length; k++) {
-               muster[k].setX(thisTerritory.uiData.musterPos[k].x);
-               muster[k].setY(thisTerritory.uiData.musterPos[k].y);
-            }
+        thisBoundary.setY(event.layerY * 2 - 50);
+        thisBoundary.setX(event.layerX * 2 - 75);
+
+
+        if (thisTerritory.uiData.unitBoundary) {
+            thisBoundary.setY(thisTerritory.uiData.unitBoundary.y);
+            thisBoundary.setX(thisTerritory.uiData.unitBoundary.x);
         }
 
         area.setFill("#b5fcc6");
@@ -218,16 +214,16 @@ Westeros.Main = (function () {
             if (e.ctrlKey) {
                 this.setFill("black");
                 mapLayer.draw();
-                stage.draw();                                                                  
+                stage.draw();
 
-                thisTerritory.uiData.musterPos = {};
+                thisTerritory.uiData.unitBoundary = {};
 
-                for (var m = 0; m < muster.length; m++) {
-                    thisTerritory.uiData.musterPos = {
-                        "x": muster[m].getAttr("x"),
-                        "y": muster[m].getAttr("y")
-                    };
-                }
+                thisTerritory.uiData.unitBoundary = {
+                    "x": thisBoundary.getAttr("x"),
+                    "y": thisBoundary.getAttr("y")
+                };
+
+                thisBoundary.setDraggable("false");
 
 
                 attrLayer.draw();
@@ -242,7 +238,7 @@ Westeros.Main = (function () {
 
 
     var initUiElements = function () {
-        
+
         var barrelImg = new Image();
         barrelImg.onload = function () {
             barrelEle = new Kinetic.Image({
@@ -271,7 +267,7 @@ Westeros.Main = (function () {
             placeCrowns();
         };
 
-       
+
 
         castleEle = new Kinetic.Rect({
             width: 50,
@@ -288,6 +284,15 @@ Westeros.Main = (function () {
             x: 0,
             y: 0,
             stroke: 'blue',
+            strokeWidth: 2
+        });
+
+        unitBoundary = new Kinetic.Rect({
+            width: 100,
+            height: 100,
+            x: 0,
+            y: 0,
+            stroke: 'green',
             strokeWidth: 2
         });
 
